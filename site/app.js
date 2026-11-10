@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const phone = '557198054103';
+  const phone = '5571981054103';
   const whatsappUrl = message => `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   document.querySelectorAll('[data-whatsapp]').forEach(link => {
     const interest = link.dataset.whatsapp;

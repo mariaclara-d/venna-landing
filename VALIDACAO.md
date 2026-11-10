@@ -19,7 +19,7 @@ Verificado em Chrome nas larguras de 320, 375, 390, 430, 768, 1024, 1440 e 1920 
 
 ## Pendências antes dos anúncios
 
-- WhatsApp `557198054103` confirmado pela responsável. Ao alterar o número, atualizar tanto `index.html` quanto `app.js`.
+- WhatsApp `5571981054103` confirmado pela responsável. Ao alterar o número, atualizar tanto `index.html` quanto `app.js`.
 - Atendimento em todo o Brasil e CNPJ `69.965.547/0001-28` informados pela responsável e incluídos na página. Prazos e condições de entrega são consultados no atendimento.
 - Meta Pixel e integração de conversões não estão configurados. A responsável ainda criará a conta e fornecerá o ID do pixel.
 - Acompanhar o deploy na Vercel e fazer um contato de teste no celular com o número confirmado.
