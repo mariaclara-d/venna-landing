@@ -14,6 +14,8 @@ OUT.mkdir(exist_ok=True)
 with sync_playwright() as p:
     browser = p.chromium.launch(channel='chrome', headless=True)
     page = browser.new_page()
+    page.route('https://connect.facebook.net/**', lambda r: r.fulfill(status=200, content_type='text/javascript', body=''))
+    page.route('https://www.facebook.com/**', lambda r: r.abort())
     errors, failures = [], []
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('response', lambda r: failures.append(f'{r.status} {r.url}') if r.status >= 400 else None)
@@ -67,6 +69,7 @@ with sync_playwright() as p:
     assert not failures, failures
 
     nojs = browser.new_context(java_script_enabled=False, viewport={'width': 375, 'height': 812})
+    nojs.route('https://www.facebook.com/**', lambda r: r.abort())
     plain = nojs.new_page()
     plain.goto(BASE)
     assert plain.locator('h1').is_visible()

@@ -21,5 +21,6 @@ Verificado em Chrome nas larguras de 320, 375, 390, 430, 768, 1024, 1440 e 1920 
 
 - WhatsApp `5571981054103` confirmado pela responsável. Ao alterar o número, atualizar tanto `index.html` quanto `app.js`.
 - Atendimento em todo o Brasil e CNPJ `69.965.547/0001-28` informados pela responsável e incluídos na página. Prazos e condições de entrega são consultados no atendimento.
-- Meta Pixel e integração de conversões não estão configurados. A responsável ainda criará a conta e fornecerá o ID do pixel.
+- Meta Pixel `2114568142517377` instalado: `PageView` na abertura da página e `Contact` ao clicar em um link de WhatsApp ou continuar pelo formulário válido. `Contact` mede intenção de contato, não mensagem enviada ou venda. Os parâmetros enviados pelo código são apenas canal (`WhatsApp`) e origem (`link` ou `form`), sem campos do formulário. Não foi configurada API de Conversões.
+- Confirmar o recebimento em “Testar eventos” no Gerenciador de Eventos após o deploy. Bloqueadores de anúncios podem impedir a medição.
 - Acompanhar o deploy na Vercel e fazer um contato de teste no celular com o número confirmado.
