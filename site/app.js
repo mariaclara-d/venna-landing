@@ -13,12 +13,44 @@
   }
   document.querySelectorAll('[data-whatsapp]').forEach(link => {
     const interest = link.dataset.whatsapp;
-    const message = interest === 'geral'
+    const message = interest === 'oferta'
+      ? 'Olá, VENNA! Tenho interesse na oferta de Travertino Rockface por R$ 136,99/m², com pedido mínimo de 50 m². Gostaria de consultar as condições e solicitar um orçamento.'
+      : interest === 'geral'
       ? 'Olá, VENNA! Vim pelo site e gostaria de um orçamento.'
       : `Olá, VENNA! Vim pelo site e tenho interesse na linha ${interest}.`;
     link.href = whatsappUrl(message);
-    link.addEventListener('click', () => trackContact('link'));
+    link.addEventListener('click', () => trackContact(link.dataset.source || (interest === 'geral' ? 'link' : 'linha')));
   });
+
+  const offer = document.getElementById('offer-dialog');
+  if (offer && typeof offer.showModal === 'function') {
+    const storageKey = 'venna-rockface-offer-v1';
+    let previousFocus;
+    const openOffer = () => {
+      if (offer.open) return;
+      previousFocus = document.activeElement;
+      offer.showModal();
+      document.body.classList.add('offer-open');
+      try { sessionStorage.setItem(storageKey, 'seen'); } catch (_) {}
+    };
+    offer.querySelector('.offer-close').addEventListener('click', () => offer.close());
+    offer.addEventListener('click', event => {
+      if (event.target !== offer) return;
+      const rect = offer.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) offer.close();
+    });
+    offer.addEventListener('close', () => {
+      document.body.classList.remove('offer-open');
+      if (previousFocus && previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
+    });
+    document.querySelectorAll('[data-open-offer]').forEach(button => {
+      button.hidden = false;
+      button.addEventListener('click', openOffer);
+    });
+    let seen = false;
+    try { seen = sessionStorage.getItem(storageKey) === 'seen'; } catch (_) {}
+    if (!seen) openOffer();
+  }
 
   const form = document.getElementById('quote-form');
   const name = document.getElementById('nome');
@@ -33,7 +65,9 @@
     if (!form.reportValidity()) return;
     const values = new FormData(form);
     const message = [
-      'Olá, VENNA! Vim pelo site e gostaria de um orçamento.',
+      values.get('interesse') === 'Travertino Rockface — oferta'
+        ? 'Olá, VENNA! Tenho interesse na oferta de Travertino Rockface por R$ 136,99/m², com pedido mínimo de 50 m². Gostaria de consultar as condições e solicitar um orçamento.'
+        : 'Olá, VENNA! Vim pelo site e gostaria de um orçamento.',
       `Nome: ${String(values.get('nome')).trim()}`,
       `Perfil: ${values.get('perfil')}`,
       `Interesse: ${values.get('interesse')}`,

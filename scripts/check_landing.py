@@ -23,6 +23,8 @@ with sync_playwright() as p:
     for width, height in [(320, 740), (375, 812), (390, 844), (430, 932), (768, 1024), (1024, 768), (1440, 900), (1920, 1080)]:
         page.set_viewport_size({'width': width, 'height': height})
         page.goto(BASE, wait_until='networkidle')
+        if page.locator('#offer-dialog').is_visible():
+            page.locator('.offer-close').click()
         page.evaluate("document.documentElement.style.scrollBehavior = 'auto'")
         page.evaluate('document.fonts.ready')
         overflow = page.evaluate('document.documentElement.scrollWidth > innerWidth')
@@ -31,6 +33,8 @@ with sync_playwright() as p:
             page.locator(section).scroll_into_view_if_needed()
             page.wait_for_timeout(150)
         for img in page.locator('img').all():
+            if not img.is_visible():
+                continue
             img.scroll_into_view_if_needed()
             img.evaluate("el => el.decode()")
             assert img.evaluate('el => el.naturalWidth > 0'), img.get_attribute('src')

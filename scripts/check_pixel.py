@@ -21,6 +21,7 @@ try:
         errors = []
         page.on('pageerror', lambda e: errors.append(str(e)))
         page.goto(url, wait_until='networkidle')
+        page.locator('.offer-close').click()
         queue = lambda: page.evaluate('fbq.queue.map(args => Array.from(args))')
         assert queue() == [['init', '2114568142517377'], ['track', 'PageView']]
         page.evaluate("document.querySelector('.header-cta').addEventListener('click', e => e.preventDefault())")
